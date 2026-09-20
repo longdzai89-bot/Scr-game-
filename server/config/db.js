@@ -1,0 +1,10 @@
+import Database from 'better-sqlite3';
+import { env } from './env.js';
+import fs from 'fs';
+fs.mkdirSync(new URL('../data/',import.meta.url),{recursive:true});
+export const db=new Database(env.DB_FILE);
+db.pragma('journal_mode = WAL');
+db.exec(`CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY AUTOINCREMENT,email TEXT UNIQUE NOT NULL,password TEXT NOT NULL,name TEXT NOT NULL,role TEXT DEFAULT 'user',banned INTEGER DEFAULT 0,created_at TEXT DEFAULT CURRENT_TIMESTAMP);
+CREATE TABLE IF NOT EXISTS games(id TEXT PRIMARY KEY,name TEXT NOT NULL,owner_id INTEGER,status TEXT DEFAULT 'waiting',state TEXT DEFAULT '{}',created_at TEXT DEFAULT CURRENT_TIMESTAMP);
+CREATE TABLE IF NOT EXISTS scores(id INTEGER PRIMARY KEY AUTOINCREMENT,user_id INTEGER,game_id TEXT,score INTEGER DEFAULT 0,created_at TEXT DEFAULT CURRENT_TIMESTAMP);
+CREATE TABLE IF NOT EXISTS refresh_tokens(id INTEGER PRIMARY KEY AUTOINCREMENT,user_id INTEGER,token TEXT,expires_at TEXT);`);

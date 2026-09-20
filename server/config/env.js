@@ -1,0 +1,2 @@
+import dotenv from 'dotenv'; dotenv.config();
+export const env={PORT:Number(process.env.PORT||3000),HOST:process.env.HOST||'0.0.0.0',CORS_ORIGIN:process.env.CORS_ORIGIN||'http://localhost:5173',JWT_SECRET:process.env.JWT_SECRET||'dev_access',JWT_REFRESH_SECRET:process.env.JWT_REFRESH_SECRET||'dev_refresh',ACCESS_TTL:process.env.ACCESS_TTL||'15m',REFRESH_TTL:process.env.REFRESH_TTL||'7d',DB_FILE:process.env.DB_FILE||'./data/game.sqlite',MAX_USERS:Number(process.env.MAX_USERS||1000)};

@@ -1,0 +1,11 @@
+services:
+  server:
+    image: node:18
+    working_dir: /app
+    volumes: [".:/app"]
+    ports: ["3000:3000"]
+    command: sh -c "npm install && npm --workspace server run start"
+    environment:
+      PORT: 3000
+      HOST: 0.0.0.0
+      CORS_ORIGIN: http://localhost:5173

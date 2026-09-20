@@ -1,0 +1,3 @@
+import {db} from '../config/db.js';
+// Model người dùng: mọi truy vấn đều dùng prepared statement.
+export const User={findById:id=>db.prepare('SELECT id,email,name,role,banned,created_at FROM users WHERE id=?').get(id),findByEmail:e=>db.prepare('SELECT * FROM users WHERE email=?').get(e),list:q=>db.prepare(`SELECT id,email,name,role,banned,created_at FROM users WHERE email LIKE ? OR name LIKE ? ORDER BY id DESC`).all(`%${q}%`,`%${q}%`),create:(email,password,name)=>{const r=db.prepare('INSERT INTO users(email,password,name) VALUES(?,?,?)').run(email,password,name);return r.lastInsertRowid;},ban:(id,v)=>db.prepare('UPDATE users SET banned=? WHERE id=?').run(v?1:0,id),reset:(id,p)=>db.prepare('UPDATE users SET password=? WHERE id=?').run(p,id)};

@@ -1,0 +1,1 @@
+import React,{useEffect,useState}from'react';import{api}from'../api.jsx';export default function Dashboard(){const[s,setS]=useState({});useEffect(()=>{api('/admin/stats').then(setS)},[]);return <div><h1>Dashboard</h1><pre>{JSON.stringify(s,null,2)}</pre></div>}

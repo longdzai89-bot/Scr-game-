@@ -1,0 +1,6 @@
+import {Router} from 'express'; import bcrypt from 'bcryptjs'; import {User} from '../models/user.js'; import {signAccess,signRefresh,verifyRefresh} from '../services/auth.js'; import {requireAuth} from '../middleware/auth.js'; import {Refresh} from '../models/refresh.js';
+const r=Router();
+r.post('/register',async(req,res)=>{try{const {email,password,name}=req.body;if(!email||!password)return res.status(400).json({error:'Thiếu dữ liệu'});if(User.findByEmail(email))return res.status(409).json({error:'Email đã tồn tại'});const id=User.create(email,await bcrypt.hash(password,10),name||email.split('@')[0]);res.json({id});}catch(e){res.status(500).json({error:e.message})}});
+r.post('/login',async(req,res)=>{const u=User.findByEmail(req.body.email);if(!u||u.banned||!(await bcrypt.compare(req.body.password,u.password)))return res.status(401).json({error:'Sai tài khoản hoặc mật khẩu'});const access=signAccess(u),refresh=signRefresh(u);Refresh.add(u.id,refresh,new Date(Date.now()+7*864e5).toISOString());res.json({access,refresh,user:{id:u.id,email:u.email,name:u.name,role:u.role}})});
+r.post('/refresh',(req,res)=>{try{const p=verifyRefresh(req.body.refresh);const u=User.findById(p.id);res.json({access:signAccess(u)})}catch{res.status(401).json({error:'Refresh token không hợp lệ'})}});
+r.get('/me',requireAuth,(req,res)=>res.json(req.user)); export default r;

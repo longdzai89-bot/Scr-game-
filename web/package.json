@@ -1,0 +1,1 @@
+{"name":"game-web","private":true,"scripts":{"dev":"vite","build":"vite build"},"dependencies":{"@vitejs/plugin-react":"latest","vite":"latest","react":"latest","react-dom":"latest","socket.io-client":"latest","react-router-dom":"latest"},"devDependencies":{}}

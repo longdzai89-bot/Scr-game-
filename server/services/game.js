@@ -1,0 +1,1 @@
+import {Game} from '../models/game.js'; export function applyAction(id,action){const g=Game.get(id);if(!g)throw Error('Room not found');let s=JSON.parse(g.state||'{}');s.lastAction=action;s.updatedAt=Date.now();Game.update(id,s,'playing');return s}

@@ -1,0 +1,1 @@
+import React,{useEffect,useState}from'react';import{api}from'../api.jsx';export default function Logs(){const[l,setL]=useState([]);useEffect(()=>{api('/admin/logs').then(setL)},[]);return <pre>{JSON.stringify(l,null,2)}</pre>}

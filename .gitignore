@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.env
+*.db
+*.db-shm
+*.db-wal
+android/.gradle/
+android/build/
+apk/android/
+.DS_Store

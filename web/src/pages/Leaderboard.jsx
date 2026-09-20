@@ -1,0 +1,1 @@
+import React,{useEffect,useState}from'react';import{api}from'../api/client.jsx';export default function Leaderboard(){const[x,setX]=useState([]);useEffect(()=>{api('/leaderboard').then(setX)},[]);return <div><h2>Leaderboard</h2>{x.map((u,i)=><p key={u.id}>{i+1}. {u.name} — {u.score}</p>)}</div>}

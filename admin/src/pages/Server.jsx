@@ -1,0 +1,1 @@
+import React from'react';import{api}from'../api.jsx';export default function Server(){return <div><h2>Server control</h2>{['start','stop','restart'].map(a=><button key={a} onClick={()=>api('/admin/server/'+a,{method:'POST'}).then(alert)}>{a.toUpperCase()}</button>)}</div>}

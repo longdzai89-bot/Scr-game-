@@ -1,0 +1,1 @@
+import React,{useEffect,useState}from'react';import{api}from'../api.jsx';export default function Games(){const[g,setG]=useState([]);useEffect(()=>{api('/admin/games').then(setG)},[]);return <div><h2>Games</h2>{g.map(x=><p key={x.id}>{x.name} <button onClick={()=>api('/admin/games/'+x.id,{method:'DELETE'}).then(()=>location.reload())}>Kill</button></p>)}</div>}

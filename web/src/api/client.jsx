@@ -1,0 +1,1 @@
+const API=import.meta.env.VITE_API_URL||'http://localhost:3000/api';export async function api(path,opt={}){const r=await fetch(API+path,{...opt,headers:{'Content-Type':'application/json',Authorization:`Bearer ${localStorage.access||''}`,...opt.headers}});return r.json()}

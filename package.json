@@ -1,0 +1,12 @@
+{
+  "name": "fullstack-game-platform",
+  "private": true,
+  "workspaces": ["server", "web", "admin", "apk"],
+  "scripts": {
+    "dev:server": "npm --workspace server run dev",
+    "dev:web": "npm --workspace web run dev",
+    "dev:admin": "npm --workspace admin run dev",
+    "build:web": "npm --workspace web run build",
+    "build:admin": "npm --workspace admin run build"
+  }
+}

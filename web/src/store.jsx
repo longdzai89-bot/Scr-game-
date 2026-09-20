@@ -1,0 +1,1 @@
+import React,{createContext,useContext,useState}from'react';const C=createContext();export function Store({children}){const[user,setUser]=useState(JSON.parse(localStorage.user||'null'));return <C.Provider value={{user,setUser}}>{children}</C.Provider>}export const useStore=()=>useContext(C);

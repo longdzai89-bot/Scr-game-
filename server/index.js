@@ -1,0 +1,25 @@
+import http from 'http';
+import express from 'express';
+import cors from 'cors';
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
+import { Server } from 'socket.io';
+import { env } from './config/env.js';
+import './config/db.js';
+import authRoutes from './routes/auth.js';
+import gameRoutes from './routes/game.js';
+import leaderboardRoutes from './routes/leaderboard.js';
+import adminRoutes from './routes/admin.js';
+import { authSocket } from './middleware/auth.js';
+import { registerSocketHandlers } from './services/socket.js';
+
+const app=express();
+const httpServer=http.createServer(app);
+const io=new Server(httpServer,{cors:{origin:env.CORS_ORIGIN}});
+app.use(helmet()); app.use(cors({origin:env.CORS_ORIGIN}));
+app.use(express.json()); app.use(rateLimit({windowMs:60000,max:120}));
+app.get('/health',(_,res)=>res.json({ok:true}));
+app.use('/api/auth',authRoutes); app.use('/api/games',gameRoutes);
+app.use('/api/leaderboard',leaderboardRoutes); app.use('/api/admin',adminRoutes);
+io.use(authSocket); registerSocketHandlers(io);
+httpServer.listen(env.PORT,env.HOST,()=>console.log(`Server ${env.HOST}:${env.PORT}`));
