@@ -43,7 +43,13 @@ jobs:
       - name: Install Capacitor
         run: npm --workspace apk install
 
-      - name: Generate Android project
+      - name: Install Android platform
+        run: npm --workspace apk install @capacitor/android
+
+      - name: Add Android platform
+        run: npx --workspace apk cap add android
+
+      - name: Sync Android
         run: npx --workspace apk cap sync android
 
       - name: Build APK
