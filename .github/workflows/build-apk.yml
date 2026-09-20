@@ -1,31 +1,30 @@
 name: Build APK
+
 on:
   push:
-    tags: ["v*"]
+    branches: ["main"]
   workflow_dispatch:
+
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: {node-version: 18, cache: npm}
-      - uses: actions/setup-java@v4
-        with: {distribution: temurin, java-version: "17"}
-      - uses: android-actions/setup-android@v3
-      - run: npm install
-      - run: npm --workspace web run build
-      - run: rm -rf apk/www && mkdir -p apk/www && cp -r web/dist/. apk/www/
-      - run: npm --workspace apk install
-      - run: npx --workspace apk cap sync android
-      - run: chmod +x apk/android/gradlew
-      - run: cd apk/android && ./gradlew assembleDebug
-      - uses: actions/upload-artifact@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          name: game-platform-apk
-          path: apk/android/app/build/outputs/apk/debug/app-debug.apk
-      - name: Release
-        if: startsWith(github.ref, 'refs/tags/v')
-        uses: softprops/action-gh-release@v2
-        with:
-          files: apk/android/app/build/outputs/apk/debug/app-debug.apk
+          node-version: 20
+
+      - name: Install dependencies
+        run: |
+          npm install
+          cd web
+          npm install
+
+      - name: Build web
+        run: |
+          cd web
+          npm run build
