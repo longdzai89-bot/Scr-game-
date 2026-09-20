@@ -1,1 +1,5 @@
-{"appId":"com.example.gameplatform","appName":"Game Platform","webDir":"www","server":{"url":"http://localhost:5173","cleartext":true}}
+{
+  "appId": "com.example.gameplatform",
+  "appName": "Game Platform",
+  "webDir": "www"
+}
