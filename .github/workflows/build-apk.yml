@@ -10,21 +10,35 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: npm
 
-      - name: Install dependencies
-        run: |
-          npm install
-          cd web
-          npm install
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
 
-      - name: Build web
-        run: |
-          cd web
-          npm run build
+      - uses: android-actions/setup-android@v3
+
+      - run: npm install
+
+      - run: npm --workspace web run build
+
+      - run: rm -rf apk/www && mkdir -p apk/www && cp -r web/dist/. apk/www/
+
+      - run: npm --workspace apk install
+
+      - run: npx --workspace apk cap sync android
+
+      - run: chmod +x apk/android/gradlew
+
+      - run: cd apk/android && ./gradlew assembleDebug
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: game-platform-apk
+          path: apk/android/app/build/outputs/apk/debug/app-debug.apk
